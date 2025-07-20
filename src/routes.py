@@ -10,13 +10,13 @@ def get_frase():
     mes = request.args.get("mes")
     dia = request.args.get("dia")
 
-    docs = db.collection("frases").where("ano", "==", ano)\
-                                   .where("mes", "==", mes)\
-                                   .where("dia", "==", dia)\
-                                   .stream()
-    resultado = [doc.to_dict() for doc in docs]
-    if resultado:
-        return jsonify(resultado[0])
+    ref = db.reference("/frases")
+    frases = ref.get()
+
+    # Busca por ano, mês e dia
+    for key, frase in frases.items():
+        if frase.get("ano") == ano and frase.get("mes") == mes and frase.get("dia") == dia:
+            return jsonify(frase)
     return jsonify({"erro": "Frase não encontrada"}), 404
 
 @frases_blueprint.route("/frases", methods=["POST"])
@@ -25,5 +25,7 @@ def post_frase():
     data = request.json
     if not all(k in data for k in ("ano", "mes", "dia", "texto")):
         return jsonify({"erro": "Dados incompletos"}), 400
-    db.collection("frases").add(data)
+
+    ref = db.reference("/frases")
+    ref.push(data)
     return jsonify({"mensagem": "Frase adicionada com sucesso"}), 201

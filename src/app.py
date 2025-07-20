@@ -3,32 +3,30 @@ import json
 from flask import Flask
 from flask_cors import CORS
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, db as realtime_db
 from routes import frases_blueprint
 
 app = Flask(__name__)
 CORS(app)
 
-# Detecta ambiente (DEV ou PROD)
 FLASK_ENV = os.getenv("FLASK_ENV", "development")
 
 if FLASK_ENV == "production":
-    # Lê variável de ambiente com o conteúdo do JSON
     firebase_config = os.getenv("FIREBASE_CREDENTIALS_JSON")
     if not firebase_config:
         raise ValueError("A variável de ambiente FIREBASE_CREDENTIALS_JSON não está definida.")
     cred_dict = json.loads(firebase_config)
     cred = credentials.Certificate(cred_dict)
 else:
-    # Modo desenvolvimento: lê do arquivo local
-    cred = credentials.Certificate("serviceAccountKey.json")
+    cred = credentials.Certificate("pao-diario-3f630-firebase-adminsdk-fbsvc-dabbcc0d41.json")
 
-# Inicializa Firebase
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+# Inicializa Firebase com Realtime Database
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://pao-diario-3f630-default-rtdb.firebaseio.com/'
+})
 
-# Injeta db nas rotas
-frases_blueprint.db = db
+# Injeta o db (cliente) nas rotas
+frases_blueprint.db = realtime_db
 app.register_blueprint(frases_blueprint)
 
 if __name__ == "__main__":
