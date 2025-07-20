@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arquivo - Pão Diário</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" style="text-decoration: none; color: inherit;">
+      <h1>Pão Diário 🥖</h1>
+    </a>
+    <nav>
+      <a href="sobre.html">Sobre</a>
+      <a href="arquivo.html">Arquivo</a>
+    </nav>
+  </header>
+
+  <arquivoFrases>
+    <h2>Arquivo de Frases</h2>
+    <div class="cards-container" id="cardsContainer">
+      <!-- Cards serão inseridos via JavaScript -->
+    </div>
+  </arquivoFrases>
+
+  <script>
+    const container = document.getElementById("cardsContainer");
+
+    // Carrega o JSON externo
+    fetch("data/frases.json")
+      .then(res => res.json())
+      .then(data => {
+        const frases = [];
+
+        // Percorre a estrutura aninhada
+        for (const ano in data) {
+          for (const mes in data[ano]) {
+            for (const dia in data[ano][mes]) {
+              const dateStr = `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+              frases.push({
+                date: dateStr,
+                phrase: data[ano][mes][dia]
+              });
+            }
+          }
+        }
+
+        // Ordena da mais recente para a mais antiga
+        frases.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Cria os cards
+        frases.forEach(frase => {
+          const card = document.createElement("div");
+          card.className = "card";
+
+          const dataDiv = document.createElement("div");
+          dataDiv.className = "date";
+          dataDiv.textContent = frase.date;
+
+          const texto = document.createElement("div");
+          texto.className = "phrase-preview";
+          texto.textContent = frase.phrase;
+
+          card.appendChild(dataDiv);
+          card.appendChild(texto);
+          container.appendChild(card);
+
+          card.addEventListener('click', () => {
+            window.location.href = `frase.html?data=${frase.date}`;
+          });
+        });
+      })
+      .catch(err => {
+        const erro = document.createElement("div");
+        erro.textContent = "Erro ao carregar frases.";
+        erro.style.color = "red";
+        container.appendChild(erro);
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
