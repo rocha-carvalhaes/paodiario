@@ -1,7 +1,7 @@
 import requests
 
 # BASE_URL = "http://127.0.0.1:5000/frases"
-BASE_URL = "https://paodiario.onrender.com"
+BASE_URL = "https://paodiario.onrender.com/frases"
 
 params = {
     "ano": "2025",
