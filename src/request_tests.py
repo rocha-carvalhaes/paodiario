@@ -1,6 +1,6 @@
 import requests
 
-# BASE_URL = "http://127.0.0.1:5000/frases"
+# BASE_URL = "http://127.0.0.1:5000/todas-frases"
 BASE_URL = "https://paodiario.onrender.com/frases"
 
 params = {
@@ -9,13 +9,14 @@ params = {
     "dia": "20"
 }
 
-response = requests.get(BASE_URL, params=params)
+response = requests.get(BASE_URL)
 
 if response.status_code == 200:
-    frase = response.json()["texto"]
-    print("Frase do dia:", frase)
-elif response.status_code == 500:
-    print("Erro interno do servidor. Verifique os logs do Flask.")
+    frases = response.json()
+    print("Frases recebidas:", frases)
+    # for ano in frases:
+    #     for mes in frases[ano]:
+    #         for dia in frases[ano][mes]:
+    #             print(f"{dia}/{mes}/{ano}: {frases[int(ano)][int(mes)][int(dia)]}")
 else:
-    print("Erro:", response.status_code)
-    print("Mensagem:", response.json())
+    print("Erro:", response.status_code, response.text)
