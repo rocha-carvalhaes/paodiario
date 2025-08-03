@@ -3,9 +3,6 @@ import requests
 import datetime
 import google.generativeai as genai
 
-from dotenv import load_dotenv
-load_dotenv()
-
 # Variáveis de ambiente
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")#, "development")
 FIREBASE_URL = os.getenv("FIREBASE_URL")#, "development")
