@@ -1,8 +1,8 @@
-name: Gerar frase diária
+name: gerar-frase-diaria
 
 on:
   schedule:
-    - cron: "0 7 * * *"  # Todo dia às 7h UTC (4h BRT)
+    - cron: "0 3 * * *"  # Todo dia às 3h UTC (0h BRT)
   workflow_dispatch:       # Permite rodar manualmente
 
 jobs:
