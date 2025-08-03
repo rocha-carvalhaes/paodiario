@@ -3,9 +3,12 @@ import requests
 import datetime
 import google.generativeai as genai
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Variáveis de ambiente
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "development")
-FIREBASE_URL = os.getenv("FIREBASE_URL", "development")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")#, "development")
+FIREBASE_URL = os.getenv("FIREBASE_URL")#, "development")
 
 # Configuração da API
 genai.configure(api_key=GEMINI_API_KEY)
@@ -21,11 +24,12 @@ response = model.generate_content(prompt)
 frase = response.text.strip().replace("\n", " ")
 
 # Data atual
-hoje = datetime.date.today()
+hoje = datetime.datetime.now()
 ano = str(hoje.year)
 mes = f"{hoje.month:02d}"
 dia = f"{hoje.day:02d}"
-chave = f"{ano}{mes}{dia}"
+horaminuto = f"{hoje.hour:02d}{hoje.minute:02d}"
+chave = f"{ano}{mes}{dia}-{horaminuto}"
 
 payload = {
     "ano": ano,
