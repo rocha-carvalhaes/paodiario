@@ -9,7 +9,7 @@ const dia = String(hoje.getDate()).padStart(2, '0');
 
 // Monta a URL da API
 const BASE_API = "https://paodiario.onrender.com";  // substitua pela URL real
-const API_URL = `${baseURL}/frases?ano=${ano}&mes=${mes}&dia=${dia}`;
+const API_URL = `${BASE_API}/frases?ano=${ano}&mes=${mes}&dia=${dia}`;
 
 // Busca a frase do dia via API
 fetch(API_URL)
