@@ -3,9 +3,6 @@ import requests
 import datetime
 import google.generativeai as genai
 from scrapper_mensagem import ScrapperMensagem
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Variáveis de ambiente
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
