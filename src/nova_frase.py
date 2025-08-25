@@ -27,7 +27,7 @@ Use no máximo 300 caracteres.
 
 # Pega a resposta do modelo
 response = model.generate_content(prompt)
-frase = response.text.strip().replace("\n", " ")
+frase = response.text.strip().replace("\n", "")
 
 # Estrutura a chave para o Firebase
 hoje = datetime.datetime.now()
