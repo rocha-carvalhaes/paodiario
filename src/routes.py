@@ -19,6 +19,7 @@ def get_frase():
             return jsonify(frase)
     return jsonify({"erro": "Frase não encontrada"}), 404
 
+
 @frases_blueprint.route('/todas-frases', methods=["GET"])
 def todas_frases():
     db = frases_blueprint.db

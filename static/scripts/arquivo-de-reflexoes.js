@@ -1,10 +1,6 @@
-// scripts/arquivo-de-reflexoes.js
-
 const container = document.getElementById("cardsContainer");
 
-// Substitua pela URL real da sua API no Render
 const API_URL = "https://paodiario.onrender.com/todas-frases";
-// const API_URL = "http://127.0.0.1:5000/todas-frases"
 
 fetch(API_URL)
   .then(res => {
