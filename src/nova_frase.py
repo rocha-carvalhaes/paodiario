@@ -37,7 +37,7 @@ frase = response.text.strip().replace("\n", "")
 hoje = datetime.datetime.now()
 ano = str(hoje.year)
 mes = f"{hoje.month:02d}"
-dia = "26"#f"{hoje.day:02d}"
+dia = f"{hoje.day:02d}"
 horaminuto = f"{hoje.hour:02d}{hoje.minute:02d}"
 chave = f"{ano}{mes}{dia}-{horaminuto}"
 
