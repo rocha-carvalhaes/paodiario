@@ -1,6 +1,7 @@
 """
 Aplicação principal do Pão Diário.
 """
+import os
 import firebase_admin
 from firebase_admin import credentials, db as realtime_db
 from flask import Flask
@@ -39,9 +40,12 @@ def _setup_firebase():
         
         # Injeta o db nas rotas
         frases_blueprint.db = realtime_db
+        print("✅ Firebase configurado com sucesso")
         
     except Exception as e:
-        raise ValueError(f"Erro ao configurar Firebase: {e}")
+        print(f"⚠️ Aviso: Firebase não configurado: {e}")
+        print("⚠️ A aplicação funcionará, mas sem persistência de dados")
+        # Não falha a aplicação, apenas avisa
 
 
 # Cria a aplicação
@@ -49,5 +53,5 @@ app = create_app()
 
 # Roda o app na porta 5000 por padrão
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=False, host="0.0.0.0", port=port)
+    port = Config.PORT
+    app.run(debug=Config.DEBUG, host="0.0.0.0", port=port)

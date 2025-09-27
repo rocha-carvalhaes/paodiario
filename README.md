@@ -185,6 +185,28 @@ O sistema gera logs informativos para debug:
 - ❌ Erros com detalhes
 - 🔄 Status das operações
 
+## 🚀 Deploy no Render
+
+O projeto está configurado para deploy automático no Render:
+
+### 1. Conecte seu repositório
+- Acesse [Render Dashboard](https://dashboard.render.com/)
+- Conecte seu repositório GitHub
+
+### 2. Configure as variáveis de ambiente
+No painel do Render, adicione as seguintes variáveis:
+- `FIREBASE_URL` - URL do seu projeto Firebase
+- `FIREBASE_CREDENTIALS_JSON` - JSON das credenciais do Firebase
+- `GEMINI_API_KEY` - Chave da API do Google Gemini
+
+### 3. Deploy automático
+- O Render usará o arquivo `render.yaml` para configuração
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `python src/app.py`
+
+### 4. Verificação
+Após o deploy, acesse a URL fornecida pelo Render para verificar se está funcionando.
+
 ## 🤝 Contribuição
 
 1. Fork o projeto

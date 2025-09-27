@@ -39,9 +39,9 @@ class Config:
                 missing_vars.append(var_name)
         
         if missing_vars:
-            raise ValueError(
-                f"Variáveis de ambiente obrigatórias não definidas: {', '.join(missing_vars)}"
-            )
+            print(f"⚠️ Aviso: Variáveis de ambiente não definidas: {', '.join(missing_vars)}")
+            print("⚠️ Algumas funcionalidades podem não funcionar corretamente")
+            # Não falha mais, apenas avisa
     
     @classmethod
     def get_firebase_credentials(cls):
