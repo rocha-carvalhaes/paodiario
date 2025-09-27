@@ -4,13 +4,17 @@ import datetime
 import google.generativeai as genai
 from scrapper_mensagem import ScrapperMensagem
 
+# Desenvolvimento local
+# from dotenv import load_dotenv
+# load_dotenv()
+
 # Variáveis de ambiente
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 FIREBASE_URL = os.getenv("FIREBASE_URL")
 
 # Configuração da API
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel("models/gemini-1.5-pro")
+model = genai.GenerativeModel("models/gemini-2.5-flash")
 
 mensagem_base = ScrapperMensagem().coletar_mensagem()
 
@@ -21,7 +25,7 @@ A mensagem deve começar com uma frase inicial curta e significativa, em torno d
 Em seguida, desenvolva o ensinamento do dia de forma motivacional, amorosa e ecumênica, inspirado no texto a seguir mas em tom ecumênico:
 {mensagem_base}
 Inclua emojis para transmitir carinho e leveza.
-Termine sempre com "Bom dia!" seguido da referência bíblica no formato (Livro capítulo, versículo).
+Termine sempre com "Bom dia!" seguido da referência bíblica no formato (Livro por extenso, capítulo, versículo).
 Use no máximo 300 caracteres.
 """
 
@@ -33,7 +37,7 @@ frase = response.text.strip().replace("\n", "")
 hoje = datetime.datetime.now()
 ano = str(hoje.year)
 mes = f"{hoje.month:02d}"
-dia = f"{hoje.day:02d}"
+dia = "26"#f"{hoje.day:02d}"
 horaminuto = f"{hoje.hour:02d}{hoje.minute:02d}"
 chave = f"{ano}{mes}{dia}-{horaminuto}"
 
