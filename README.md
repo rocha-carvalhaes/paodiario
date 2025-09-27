@@ -18,13 +18,16 @@ O projeto segue uma arquitetura limpa e modular:
 ```
 src/
 ├── config/          # Configurações centralizadas
-├── models/          # Modelos de dados (Frase)
+│   └── settings.py
+├── models/          # Modelos de dados
+│   └── frase.py
 ├── services/        # Lógica de negócio
 │   ├── scraper_service.py    # Scraping do Vatican News
 │   ├── ai_service.py         # Geração com IA
 │   ├── firebase_service.py   # Interação com Firebase
 │   └── frase_service.py      # Orquestração completa
 ├── api/            # Rotas e endpoints
+│   └── routes.py
 └── app.py          # Aplicação Flask principal
 ```
 

@@ -27,6 +27,10 @@ wheels/
 .installed.cfg
 *.egg
 
+# Arquivos de teste temporários
+test_*.py
+*_test.py
+
 # Virtual Environment
 env/
 venv/
