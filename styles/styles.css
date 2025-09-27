@@ -157,3 +157,84 @@ h2 {
     font-size: 0.95rem;
     }
 }
+
+/* Estilos para a página Sobre */
+.sobre-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.sobre-container h2 {
+    color: var(--acentuada);
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.sobre-content h3 {
+    color: var(--acentuada);
+    margin: 2rem 0 1rem 0;
+    font-size: 1.5rem;
+}
+
+.sobre-content p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.sobre-content ul {
+    margin: 1rem 0 1.5rem 2rem;
+}
+
+.sobre-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.cta-section {
+    background-color: rgba(138, 94, 59, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: var(--acentuada);
+    color: white;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #6d4a2e;
+}
+
+/* Estilos para a página Arquivo */
+arquivoFrases h2 {
+    color: var(--acentuada);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+}
+
+.date {
+    color: var(--acentuada);
+    font-weight: 600;
+}
+
+/* Estilos para a página Reflexão Antiga */
+#aviso {
+    color: var(--acentuada);
+}
+
+#data {
+    color: var(--acentuada);
+    font-weight: 600;
+}

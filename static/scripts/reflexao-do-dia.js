@@ -18,9 +18,9 @@ fetch(API_URL)
     return res.json();
   })
   .then(data => {
-    fraseElemento.textContent = data.texto || "Hoje o padeiro dormiu. Volte amanhã! 💤";
+    fraseElemento.textContent = data.texto || "Reflexão não disponível para hoje. Tente novamente mais tarde.";
   })
   .catch(err => {
     console.error("Erro ao carregar frase:", err);
-    fraseElemento.textContent = "Erro ao carregar a fornada do dia. 😓";
+    fraseElemento.textContent = "Erro ao carregar a reflexão do dia. Tente novamente mais tarde.";
   });

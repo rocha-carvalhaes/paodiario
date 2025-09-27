@@ -1,15 +1,15 @@
 # 🥖 Pão Diário
 
-Uma aplicação que gera frases motivacionais diárias usando IA, inspiradas em mensagens do Vatican News.
+Uma plataforma inspiradora que gera reflexões motivacionais diárias usando inteligência artificial, baseadas em ensinamentos espirituais e mensagens do Vatican News.
 
 ## ✨ Funcionalidades
 
-- 🤖 **Geração automática de frases** usando Google Gemini AI
-- 📰 **Scraping inteligente** do Vatican News para mensagens base
-- 🔥 **Armazenamento no Firebase** Realtime Database
-- 🌐 **API REST** para consultar frases
-- ⏰ **Automação via GitHub Actions** (gera frase diariamente às 3h UTC)
-- 🎨 **Interface web** para visualizar as frases
+- 🤖 **Geração automática de reflexões** usando Google Gemini AI
+- 📰 **Coleta inteligente** de mensagens do Vatican News como base
+- 🔥 **Armazenamento seguro** no Firebase Realtime Database
+- 🌐 **API REST** para consultar reflexões
+- ⏰ **Automação diária** via GitHub Actions (gera reflexão às 3h UTC)
+- 🎨 **Interface web elegante** para visualizar as reflexões
 
 ## 🏗️ Arquitetura
 
