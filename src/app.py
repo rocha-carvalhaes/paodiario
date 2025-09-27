@@ -1,32 +1,51 @@
-import os
-import json
-from flask import Flask
-from flask_cors import CORS
+"""
+Aplicação principal do Pão Diário.
+"""
 import firebase_admin
 from firebase_admin import credentials, db as realtime_db
-from routes import frases_blueprint
+from flask import Flask
+from flask_cors import CORS
 
-# Configura aplicação Flask
-app = Flask(__name__)
-CORS(app)
+from config.settings import Config
+from api.routes import frases_blueprint
 
-# Declara as variáveis de ambiente
-FLASK_ENV = os.getenv("FLASK_ENV", "development")
-FIREBASE_URL = os.getenv("FIREBASE_URL")
-FIREBASE_CREDENTIALS_JSON = os.getenv("FIREBASE_CREDENTIALS_JSON")
 
-# Estrutura as credenciais do Firebase
-cred_dict = json.loads(FIREBASE_CREDENTIALS_JSON)
-cred = credentials.Certificate(cred_dict)
+def create_app():
+    """Factory function para criar a aplicação Flask."""
+    app = Flask(__name__)
+    CORS(app)
+    
+    # Valida configurações
+    Config.validate_config()
+    
+    # Configura Firebase
+    _setup_firebase()
+    
+    # Registra blueprints
+    app.register_blueprint(frases_blueprint)
+    
+    return app
 
-# Inicializa Firebase com Realtime Database
-firebase_admin.initialize_app(cred, {
-    'databaseURL': FIREBASE_URL
-})
 
-# Injeta o db (cliente) nas rotas
-frases_blueprint.db = realtime_db
-app.register_blueprint(frases_blueprint)
+def _setup_firebase():
+    """Configura e inicializa o Firebase."""
+    try:
+        cred_dict = Config.get_firebase_credentials()
+        cred = credentials.Certificate(cred_dict)
+        
+        firebase_admin.initialize_app(cred, {
+            'databaseURL': Config.FIREBASE_URL
+        })
+        
+        # Injeta o db nas rotas
+        frases_blueprint.db = realtime_db
+        
+    except Exception as e:
+        raise ValueError(f"Erro ao configurar Firebase: {e}")
+
+
+# Cria a aplicação
+app = create_app()
 
 # Roda o app na porta 5000 por padrão
 if __name__ == "__main__":

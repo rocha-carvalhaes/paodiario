@@ -27,4 +27,5 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           FIREBASE_URL: ${{ secrets.FIREBASE_URL }}
-        run: python src/nova_frase.py
+          FIREBASE_CREDENTIALS_JSON: ${{ secrets.FIREBASE_CREDENTIALS_JSON }}
+        run: python gerar_frase.py
