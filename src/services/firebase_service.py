@@ -16,21 +16,32 @@ class FirebaseService:
         self.base_url = Config.FIREBASE_URL.rstrip('/')
         self.session = requests.Session()
         
-        # Verifica se o Firebase já foi inicializado
+        # Inicializa o Firebase de forma mais robusta
+        self._initialize_firebase()
+    
+    def _initialize_firebase(self):
+        """Inicializa o Firebase de forma robusta."""
         try:
-            # Tenta acessar o app padrão
+            # Verifica se o Firebase já foi inicializado
             firebase_admin.get_app()
+            print("✅ Firebase já inicializado")
         except ValueError:
             # Se não existe, inicializa
+            print("🔄 Inicializando Firebase...")
             try:
                 cred_dict = Config.get_firebase_credentials()
+                if not cred_dict:
+                    raise ValueError("Credenciais do Firebase não encontradas")
+                
                 cred = firebase_admin.credentials.Certificate(cred_dict)
                 firebase_admin.initialize_app(cred, {
                     'databaseURL': Config.FIREBASE_URL
                 })
+                print("✅ Firebase inicializado com sucesso")
             except Exception as e:
-                print(f"⚠️ Aviso: Firebase não configurado: {e}")
+                print(f"❌ Erro ao inicializar Firebase: {e}")
                 print("⚠️ Operações de escrita podem falhar")
+                raise
     
     def salvar_frase(self, frase: Frase) -> bool:
         """
