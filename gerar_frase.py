@@ -4,6 +4,10 @@ Pode ser executado manualmente ou via cron job.
 """
 import sys
 import os
+from dotenv import load_dotenv
+
+# Carrega variáveis de ambiente PRIMEIRO
+load_dotenv()
 
 # Adiciona o diretório src ao path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
@@ -13,19 +17,25 @@ from services.frase_service import FraseService
 
 def main():
     """Função principal para gerar frase do dia."""
+    import sys
+    
     try:
-        print("🥖 Iniciando geração da frase do dia...")
+        print("🥖 Iniciando geração da frase do dia...", flush=True)
+        sys.stdout.flush()
         
         frase_service = FraseService()
         frase = frase_service.gerar_frase_do_dia()
         
-        print(f"✅ Frase gerada com sucesso!")
-        print(f"📝 Texto: {frase.texto}")
-        print(f"📅 Data: {frase.ano}-{frase.mes}-{frase.dia}")
-        print(f"🔑 Chave: {frase.chave}")
+        print(f"✅ Frase gerada com sucesso!", flush=True)
+        print(f"📝 Texto: {frase.texto}", flush=True)
+        print(f"📅 Data: {frase.ano}-{frase.mes}-{frase.dia}", flush=True)
+        print(f"🔑 Chave: {frase.chave}", flush=True)
+        sys.stdout.flush()
         
     except Exception as e:
-        print(f"❌ Erro ao gerar frase: {e}")
+        print(f"❌ Erro ao gerar frase: {e}", flush=True)
+        import traceback
+        traceback.print_exc()
         return 1
     
     return 0

@@ -30,16 +30,19 @@ class AIService:
         prompt = self._criar_prompt(mensagem_base)
         
         try:
+            print("🔄 Enviando prompt para o Gemini...")
             response = self.model.generate_content(prompt)
             
             if not response.text:
                 raise ValueError("Resposta vazia do modelo Gemini")
             
             frase = response.text.strip().replace("\n", "")
+            print(f"✅ Resposta recebida do Gemini: {len(frase)} caracteres")
             return frase
             
         except Exception as e:
-            print(f"Erro ao gerar frase: {e}")
+            print(f"❌ Erro ao gerar frase: {e}")
+            print("🔄 Usando frase de fallback...")
             return self._frase_fallback()
     
     def _criar_prompt(self, mensagem_base: str) -> str:
