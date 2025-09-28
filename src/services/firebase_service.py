@@ -5,6 +5,8 @@ import requests
 from typing import Dict, Any, Optional
 from config.settings import Config
 from models.frase import Frase
+import firebase_admin
+from firebase_admin import db as realtime_db
 
 
 class FirebaseService:
@@ -13,10 +15,26 @@ class FirebaseService:
     def __init__(self):
         self.base_url = Config.FIREBASE_URL.rstrip('/')
         self.session = requests.Session()
+        
+        # Verifica se o Firebase já foi inicializado
+        try:
+            # Tenta acessar o app padrão
+            firebase_admin.get_app()
+        except ValueError:
+            # Se não existe, inicializa
+            try:
+                cred_dict = Config.get_firebase_credentials()
+                cred = firebase_admin.credentials.Certificate(cred_dict)
+                firebase_admin.initialize_app(cred, {
+                    'databaseURL': Config.FIREBASE_URL
+                })
+            except Exception as e:
+                print(f"⚠️ Aviso: Firebase não configurado: {e}")
+                print("⚠️ Operações de escrita podem falhar")
     
     def salvar_frase(self, frase: Frase) -> bool:
         """
-        Salva uma frase no Firebase.
+        Salva uma frase no Firebase usando o SDK oficial.
         
         Args:
             frase (Frase): Instância da frase a ser salva.
@@ -25,29 +43,21 @@ class FirebaseService:
             bool: True se salvou com sucesso, False caso contrário.
         """
         try:
-            url = f"{self.base_url}/frases/{frase.chave}.json"
-            payload = frase.to_dict()
+            # Usa o SDK oficial do Firebase (autenticado via service account)
+            ref = realtime_db.reference(f'/frases/{frase.chave}')
+            ref.set(frase.to_dict())
             
-            response = self.session.put(url, json=payload, timeout=10)
-            
-            if response.ok:
-                print(f"✅ Frase salva com sucesso no Firebase: {frase.texto}")
-                print(f"📅 Chave: {frase.chave}")
-                return True
-            else:
-                print(f"❌ Erro ao salvar no Firebase: {response.status_code} - {response.text}")
-                return False
+            print(f"✅ Frase salva com sucesso no Firebase: {frase.texto}")
+            print(f"📅 Chave: {frase.chave}")
+            return True
                 
-        except requests.RequestException as e:
-            print(f"❌ Erro de conexão com Firebase: {e}")
-            return False
         except Exception as e:
-            print(f"❌ Erro inesperado ao salvar: {e}")
+            print(f"❌ Erro ao salvar no Firebase: {e}")
             return False
     
     def buscar_frase(self, ano: str, mes: str, dia: str) -> Optional[Dict[str, Any]]:
         """
-        Busca uma frase específica por data.
+        Busca uma frase específica por data usando o SDK oficial.
         
         Args:
             ano (str): Ano da frase.
@@ -58,14 +68,12 @@ class FirebaseService:
             Optional[Dict[str, Any]]: Dados da frase ou None se não encontrada.
         """
         try:
-            url = f"{self.base_url}/frases.json"
-            response = self.session.get(url, timeout=10)
+            # Usa o SDK oficial do Firebase
+            ref = realtime_db.reference('/frases')
+            frases = ref.get()
             
-            if not response.ok:
-                print(f"❌ Erro ao buscar frases: {response.status_code}")
+            if not frases:
                 return None
-            
-            frases = response.json() or {}
             
             # Busca por ano, mês e dia
             for key, frase_data in frases.items():
@@ -76,33 +84,24 @@ class FirebaseService:
             
             return None
             
-        except requests.RequestException as e:
-            print(f"❌ Erro de conexão ao buscar frase: {e}")
-            return None
         except Exception as e:
-            print(f"❌ Erro inesperado ao buscar frase: {e}")
+            print(f"❌ Erro ao buscar frase: {e}")
             return None
     
     def listar_todas_frases(self) -> Dict[str, Any]:
         """
-        Lista todas as frases do Firebase.
+        Lista todas as frases do Firebase usando o SDK oficial.
         
         Returns:
             Dict[str, Any]: Dicionário com todas as frases.
         """
         try:
-            url = f"{self.base_url}/frases.json"
-            response = self.session.get(url, timeout=10)
+            # Usa o SDK oficial do Firebase
+            ref = realtime_db.reference('/frases')
+            frases = ref.get()
             
-            if response.ok:
-                return response.json() or {}
-            else:
-                print(f"❌ Erro ao listar frases: {response.status_code}")
-                return {}
+            return frases or {}
                 
-        except requests.RequestException as e:
-            print(f"❌ Erro de conexão ao listar frases: {e}")
-            return {}
         except Exception as e:
-            print(f"❌ Erro inesperado ao listar frases: {e}")
+            print(f"❌ Erro ao listar frases: {e}")
             return {}
