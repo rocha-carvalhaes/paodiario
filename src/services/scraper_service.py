@@ -2,9 +2,12 @@
 Serviço responsável por fazer scraping de mensagens.
 """
 import requests
-from bs4 import BeautifulSoup
+from lxml import html
 from datetime import datetime
-from typing import Optional
+
+
+# XPath do container da mensagem do dia no Vatican News
+XPATH_CONTEUDO = '//*[@id="main-container"]/main/div[1]/div/section[1]/div[2]/div'
 
 
 class ScraperService:
@@ -34,14 +37,15 @@ class ScraperService:
             response = self.session.get(url, timeout=10)
             response.raise_for_status()
             
-            soup = BeautifulSoup(response.content, 'html.parser')
-            div_conteudo = soup.find('div', class_='section__content')
+            tree = html.fromstring(response.content)
+            elementos = tree.xpath(XPATH_CONTEUDO)
             
-            if not div_conteudo:
-                raise ValueError("Div de conteúdo não encontrada na página")
+            if not elementos:
+                raise ValueError("Elemento de conteúdo não encontrado na página (XPath)")
             
-            paragrafos = div_conteudo.find_all('p')
-            textos = [p.get_text().strip() for p in paragrafos if p.get_text().strip()]
+            div_conteudo = elementos[0]
+            paragrafos = div_conteudo.xpath('.//p')
+            textos = [p.text_content().strip() for p in paragrafos if p.text_content().strip()]
             mensagem = " ".join(textos)
             
             if not mensagem:

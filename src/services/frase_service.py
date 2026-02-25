@@ -49,6 +49,45 @@ class FraseService:
         
         return frase
     
+    def gerar_frase_para_data(self, ano: str, mes: str, dia: str) -> Frase:
+        """
+        Gera uma frase do dia para uma data específica (útil para preencher datas retroativas).
+        1. Coleta mensagem base do Vatican News
+        2. Gera frase usando IA
+        3. Salva no Firebase com a data informada
+        
+        Args:
+            ano: Ano (ex: "2026")
+            mes: Mês com 2 dígitos (ex: "01")
+            dia: Dia com 2 dígitos (ex: "29")
+        
+        Returns:
+            Frase: Instância da frase gerada.
+        """
+        # 1. Coleta mensagem base
+        print(f"🔄 Coletando mensagem base para {ano}-{mes}-{dia}...")
+        mensagem_base = self.scraper.coletar_mensagem()
+        print(f"✅ Mensagem coletada: {mensagem_base[:50]}...")
+        
+        # 2. Gera frase usando IA
+        print("🤖 Gerando frase com IA...")
+        texto_frase = self.ai.gerar_frase(mensagem_base)
+        print(f"✅ Frase gerada: {texto_frase[:50]}...")
+        
+        # 3. Cria objeto Frase com a data informada
+        frase = Frase(texto=texto_frase, ano=ano, mes=mes, dia=dia)
+        
+        # 4. Salva no Firebase
+        print("💾 Salvando no Firebase...")
+        sucesso = self.firebase.salvar_frase(frase)
+        
+        if sucesso:
+            print(f"🎉 Frase do dia {ano}-{mes}-{dia} gerada com sucesso!")
+        else:
+            print(f"⚠️ Frase gerada mas não foi possível salvar no Firebase para {ano}-{mes}-{dia}")
+        
+        return frase
+    
     def buscar_frase_por_data(self, ano: str, mes: str, dia: str) -> Frase:
         """
         Busca uma frase específica por data.
