@@ -1,6 +1,9 @@
 # 🥖 Pão Diário
+https://rocha-carvalhaes.github.io/paodiario/index.html *(cold start de 1 minuto)*
 
 Uma plataforma inspiradora que gera reflexões motivacionais diárias usando inteligência artificial, baseadas em ensinamentos espirituais e mensagens do Vatican News.
+
+<img width="1911" height="863" alt="image" src="https://github.com/user-attachments/assets/dd0b539b-215a-42dd-b539-46df7c957677" />
 
 ## ✨ Funcionalidades
 
